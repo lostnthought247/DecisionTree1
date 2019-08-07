@@ -23,7 +23,7 @@ df.loc[df['Working'] == "Parttime", 'Working'] = 1
 df.loc[df['Working'] == "no", 'Working'] = 0
 
 # Removes student id from decision tree
-df.drop("ID", axis=1)
+df = df.drop("ID", axis=1)
 
 # Seperates classification column and attributes columns
 X = df.drop('Completed Program', axis=1)
@@ -34,13 +34,13 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20)
 
 
 # Creates and trains decision tree classifier
-classifier = DecisionTreeClassifier(random_state = 0, max_depth = 8)
+classifier = DecisionTreeClassifier(random_state = 0, max_depth = 10)
 classifier.fit(X_train, y_train)
 
 print(classifier.score(X_test, y_test))
 
 
-# Creates .Dot file that can be used to visualize tree at "https://stackoverflow.com/questions/5316206/converting-dot-to-png-in-python"
+# Creates .Dot file that can be used to visualize tree at "http://www.webgraphviz.com/"
 from sklearn.tree import export_graphviz
 export_graphviz(classifier, out_file='tree.dot',
                 rounded = True, proportion = False,
@@ -48,8 +48,6 @@ export_graphviz(classifier, out_file='tree.dot',
 
 
 # Collects input fields for build student attributes for classification
-# ID = input("What is the students ID? (5 digits)")
-# ID = float(ID)
 GPA = input("What is the students GPA? (no decimal plz)")
 GPA = int(float(GPA))
 Prior_Degree = input("Does the student have a prior degree? (y/n)")
@@ -74,6 +72,7 @@ if First_Gen.lower == "y" or First_Gen.lower == "yes":
 else:
     First_Gen = 0
 
+print(df.head())
 Student_Attributes = [GPA, Prior_Degree, Test_Score, Income, Working, First_Gen]
 
 # Runs prediction with input values and reports results
